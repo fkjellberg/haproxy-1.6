@@ -1416,7 +1416,7 @@ static struct task *server_warmup(struct task *t)
  *  - SF_ERR_PRXCOND if the connection has been limited by the proxy (maxconn)
  *  - SF_ERR_RESOURCE if a system resource is lacking (eg: fd limits, ports, ...)
  *  - SF_ERR_INTERNAL for any other purely internal errors
- * Additionnally, in the case of SF_ERR_RESOURCE, an emergency log will be emitted.
+ * Additionally, in the case of SF_ERR_RESOURCE, an emergency log will be emitted.
  * Note that we try to prevent the network stack from sending the ACK during the
  * connect() when a pure TCP check is used (without PROXY protocol).
  */
@@ -1790,7 +1790,7 @@ err:
  *  - SF_ERR_PRXCOND if the connection has been limited by the proxy (maxconn)
  *  - SF_ERR_RESOURCE if a system resource is lacking (eg: fd limits, ports, ...)
  *  - SF_ERR_INTERNAL for any other purely internal errors
- * Additionnally, in the case of SF_ERR_RESOURCE, an emergency log will be emitted.
+ * Additionally, in the case of SF_ERR_RESOURCE, an emergency log will be emitted.
  *
  * Blocks and then unblocks SIGCHLD
  */
@@ -2713,7 +2713,7 @@ static void tcpcheck_main(struct connection *conn)
 			 *  - SF_ERR_PRXCOND if the connection has been limited by the proxy (maxconn)
 			 *  - SF_ERR_RESOURCE if a system resource is lacking (eg: fd limits, ports, ...)
 			 *  - SF_ERR_INTERNAL for any other purely internal errors
-			 * Additionnally, in the case of SF_ERR_RESOURCE, an emergency log will be emitted.
+			 * Additionally, in the case of SF_ERR_RESOURCE, an emergency log will be emitted.
 			 * Note that we try to prevent the network stack from sending the ACK during the
 			 * connect() when a pure TCP check is used (without PROXY protocol).
 			 */

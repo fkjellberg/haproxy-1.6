@@ -1437,9 +1437,10 @@ static int stats_sock_parse_request(struct stream_interface *si, char *line)
 
 			/* return server's effective weight at the moment */
 			snprintf(trash.str, trash.size, "%d (initial %d)\n", sv->uweight, sv->iweight);
-			if (bi_putstr(si_ic(si), trash.str) == -1)
+			if (bi_putstr(si_ic(si), trash.str) == -1) {
 				si_applet_cant_put(si);
-
+				return 0;
+			}
 			return 1;
 		}
 		else if (strcmp(args[1], "map") == 0 || strcmp(args[1], "acl") == 0) {

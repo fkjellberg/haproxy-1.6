@@ -2732,7 +2732,7 @@ static int stats_dump_info_to_buffer(struct stream_interface *si)
 #ifdef USE_ZLIB
 	             zlib_used_memory, global.maxzlibmem,
 #endif
-	             nb_tasks_cur, run_queue_cur, idle_pct,
+	             nb_tasks_cur, tasks_run_queue_cur, idle_pct,
 	             global.node, global.desc ? global.desc : ""
 	             );
 
@@ -4536,7 +4536,7 @@ static void stats_dump_html_info(struct stream_interface *si, struct uri_auth *u
 	              global.rlimit_nofile,
 	              global.maxsock, global.maxconn, global.maxpipes,
 	              actconn, pipes_used, pipes_used+pipes_free, read_freq_ctr(&global.conn_per_sec),
-	              run_queue_cur, nb_tasks_cur, idle_pct
+	              tasks_run_queue_cur, nb_tasks_cur, idle_pct
 	              );
 
 	/* scope_txt = search query, appctx->ctx.stats.scope_len is always <= STAT_SCOPE_TXT_MAXLEN */

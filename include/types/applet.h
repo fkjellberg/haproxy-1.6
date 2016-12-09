@@ -26,6 +26,7 @@
 #include <types/obj_type.h>
 #include <types/proxy.h>
 #include <types/stream.h>
+#include <common/buffer.h>
 #include <common/chunk.h>
 #include <common/config.h>
 
@@ -54,6 +55,7 @@ struct appctx {
 	struct applet *applet;     /* applet this context refers to */
 	void *owner;               /* pointer to upper layer's entity (eg: stream interface) */
 	struct act_rule *rule;     /* rule associated with the applet. */
+	struct buffer_wait buffer_wait; /* position in the list of objects waiting for a buffer */
 
 	union {
 		struct {

@@ -5105,6 +5105,7 @@ static struct task *hlua_process_task(struct task *task)
 	/* finished or yield */
 	case HLUA_E_OK:
 		hlua_ctx_destroy(hlua);
+		free(hlua);
 		task_delete(task);
 		task_free(task);
 		break;
@@ -5118,6 +5119,7 @@ static struct task *hlua_process_task(struct task *task)
 	case HLUA_E_ERRMSG:
 		SEND_ERR(NULL, "Lua task: %s.\n", lua_tostring(hlua->T, -1));
 		hlua_ctx_destroy(hlua);
+		free(hlua);
 		task_delete(task);
 		task_free(task);
 		break;
@@ -5126,6 +5128,7 @@ static struct task *hlua_process_task(struct task *task)
 	default:
 		SEND_ERR(NULL, "Lua task: unknown error.\n");
 		hlua_ctx_destroy(hlua);
+		free(hlua);
 		task_delete(task);
 		task_free(task);
 		break;

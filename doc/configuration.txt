@@ -14690,6 +14690,24 @@ the session termination flags. In TCP mode with "option tcplog" set on the
 frontend, 3 control points are reported under the form "Tw/Tc/Tt", and in HTTP
 mode, 5 control points are reported under the form "Tq/Tw/Tc/Tr/Tt" :
 
+Timings events in HTTP mode:
+
+             first request               2nd request
+      |<---------------------->|<-------------- ...
+      t                        t     ...
+   ---|----|----|----|----|----|----|--
+      : Tq   Tw   Tc   Tr   Td : Tq  ...
+      :<--------- Tt --------->:
+
+Timings events in TCP mode:
+
+         TCP session
+      |<------------>|
+      t              t
+   ---|----|----|----|---
+      | Tw   Tc   Td |
+      |<---- Tt ---->|
+
   - Tq: total time to get the client request (HTTP mode only). It's the time
     elapsed between the moment the client connection was accepted and the
     moment the proxy received the last HTTP header. The value "-1" indicates

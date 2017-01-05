@@ -133,21 +133,25 @@
  * The field is blanked by channel_init() and only by analysers themselves
  * afterwards.
  */
-/* unused: 0x00000001 */
+/* unused:                      0x00000001 */
 #define AN_REQ_INSPECT_FE       0x00000002  /* inspect request contents in the frontend */
 #define AN_REQ_WAIT_HTTP        0x00000004  /* wait for an HTTP request */
 #define AN_REQ_HTTP_BODY        0x00000008  /* wait for HTTP request body */
 #define AN_REQ_HTTP_PROCESS_FE  0x00000010  /* process the frontend's HTTP part */
 #define AN_REQ_SWITCHING_RULES  0x00000020  /* apply the switching rules */
-#define AN_REQ_INSPECT_BE       0x00000040  /* inspect request contents in the backend */
-#define AN_REQ_HTTP_PROCESS_BE  0x00000080  /* process the backend's HTTP part */
-#define AN_REQ_SRV_RULES        0x00000100  /* use-server rules */
-#define AN_REQ_HTTP_INNER       0x00000200  /* inner processing of HTTP request */
-#define AN_REQ_HTTP_TARPIT      0x00000400  /* wait for end of HTTP tarpit */
-#define AN_REQ_STICKING_RULES   0x00000800  /* table persistence matching */
+/* unused:                      0x00000040 */
+#define AN_REQ_INSPECT_BE       0x00000080  /* inspect request contents in the backend */
+#define AN_REQ_HTTP_PROCESS_BE  0x00000100  /* process the backend's HTTP part */
+#define AN_REQ_HTTP_TARPIT      0x00000200  /* wait for end of HTTP tarpit */
+#define AN_REQ_SRV_RULES        0x00000400  /* use-server rules */
+#define AN_REQ_HTTP_INNER       0x00000800  /* inner processing of HTTP request */
 #define AN_REQ_PRST_RDP_COOKIE  0x00001000  /* persistence on rdp cookie */
-#define AN_REQ_HTTP_XFER_BODY   0x00002000  /* forward request body */
-#define AN_REQ_ALL              0x00003ffe  /* all of the request analysers */
+#define AN_REQ_STICKING_RULES   0x00002000  /* table persistence matching */
+/* unused:                      0x00004000 */
+#define AN_REQ_HTTP_XFER_BODY   0x00008000  /* forward request body */
+/* unused:                      0x00010000 */
+/* unused:                      0x00020000 */
+#define AN_REQ_ALL              0x0000bfbe  /* all of the request analysers */
 
 /* response analysers */
 #define AN_RES_INSPECT          0x00010000  /* content inspection */

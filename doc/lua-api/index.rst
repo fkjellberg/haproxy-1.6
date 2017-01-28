@@ -1292,7 +1292,7 @@ Map class
   default = "usa"
 
   -- Create and load map
-  geo = Map.new("geo.map", Map.ip);
+  geo = Map.new("geo.map", Map._ip);
 
   -- Create new fetch that returns the user country
   core.register_fetches("country", function(txn)
@@ -1317,59 +1317,75 @@ Map class
     return loc;
   end);
 
-.. js:attribute:: Map.int
+.. js:attribute:: Map._int
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.ip
+  Note that :js:attr:`Map.int` is also available for compatibility.
+
+.. js:attribute:: Map._ip
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.str
+  Note that :js:attr:`Map.ip` is also available for compatibility.
+
+.. js:attribute:: Map._str
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.beg
+  Note that :js:attr:`Map.str` is also available for compatibility.
+
+.. js:attribute:: Map._beg
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.sub
+  Note that :js:attr:`Map.beg` is also available for compatibility.
+
+.. js:attribute:: Map._sub
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.dir
+  Note that :js:attr:`Map.sub` is also available for compatibility.
+
+.. js:attribute:: Map._dir
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.dom
+  Note that :js:attr:`Map.dir` is also available for compatibility.
+
+.. js:attribute:: Map._dom
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.end
+  Note that :js:attr:`Map.dom` is also available for compatibility.
+
+.. js:attribute:: Map._end
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
 
-.. js:attribute:: Map.reg
+.. js:attribute:: Map._reg
 
   See the HAProxy configuration.txt file, chapter "Using ACLs and fetching
   samples" ans subchapter "ACL basics" to understand this pattern matching
   method.
+
+  Note that :js:attr:`Map.reg` is also available for compatibility.
 
 
 .. js:function:: Map.new(file, method)

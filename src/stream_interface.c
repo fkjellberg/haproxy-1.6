@@ -203,6 +203,11 @@ static void stream_int_shutw(struct stream_interface *si)
 	oc->wex = TICK_ETERNITY;
 	si->flags &= ~SI_FL_WAIT_DATA;
 
+	if (tick_isset(si->hcto)) {
+		ic->rto = si->hcto;
+		ic->rex = tick_add(now_ms, ic->rto);
+	}
+
 	switch (si->state) {
 	case SI_ST_EST:
 		/* we have to shut before closing, otherwise some short messages
@@ -824,6 +829,11 @@ static void stream_int_shutw_conn(struct stream_interface *si)
 	oc->wex = TICK_ETERNITY;
 	si->flags &= ~SI_FL_WAIT_DATA;
 
+	if (tick_isset(si->hcto)) {
+		ic->rto = si->hcto;
+		ic->rex = tick_add(now_ms, ic->rto);
+	}
+
 	switch (si->state) {
 	case SI_ST_EST:
 		/* we have to shut before closing, otherwise some short messages
@@ -1438,6 +1448,11 @@ static void stream_int_shutw_applet(struct stream_interface *si)
 	oc->flags |= CF_SHUTW;
 	oc->wex = TICK_ETERNITY;
 	si->flags &= ~SI_FL_WAIT_DATA;
+
+	if (tick_isset(si->hcto)) {
+		ic->rto = si->hcto;
+		ic->rex = tick_add(now_ms, ic->rto);
+	}
 
 	/* on shutw we always wake the applet up */
 	appctx_wakeup(si_appctx(si));

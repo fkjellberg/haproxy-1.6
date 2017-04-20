@@ -1048,6 +1048,8 @@ int parse_server(const char *file, int linenum, char **args, struct proxy *curpr
 			newsrv->agent.fall	= curproxy->defsrv.agent.fall;
 			newsrv->agent.health	= newsrv->agent.rise;	/* up, but will fall down at first failure */
 			newsrv->agent.server	= newsrv;
+			if (curproxy->defsrv.resolvers_id != NULL)
+				newsrv->resolvers_id = strdup(curproxy->defsrv.resolvers_id);
 			newsrv->resolver_family_priority = curproxy->defsrv.resolver_family_priority;
 			if (newsrv->resolver_family_priority == AF_UNSPEC)
 				newsrv->resolver_family_priority = AF_INET6;
@@ -1097,6 +1099,7 @@ int parse_server(const char *file, int linenum, char **args, struct proxy *curpr
 				cur_arg += 2;
 			}
 			else if (!strcmp(args[cur_arg], "resolvers")) {
+				free(newsrv->resolvers_id);
 				newsrv->resolvers_id = strdup(args[cur_arg + 1]);
 				cur_arg += 2;
 			}

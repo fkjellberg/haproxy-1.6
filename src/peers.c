@@ -1635,7 +1635,13 @@ static void peer_session_forceshutdown(struct stream * stream)
 		break;
 	}
 
-	if (!appctx)
+	/* Note that the peer sessions which have just been created
+	 * (->st0 == PEER_SESS_ST_CONNECT) must not
+	 * be shutdown, if not, the TCP session will never be closed
+	 * and stay in CLOSE_WAIT state after having been closed by
+	 * the remote side.
+	 */
+	if (!appctx || appctx->st0 == PEER_SESS_ST_CONNECT)
 		return;
 
 	ps = (struct peer *)appctx->ctx.peers.ptr;

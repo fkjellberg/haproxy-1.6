@@ -2023,7 +2023,7 @@ struct pattern_expr *pattern_lookup_expr(struct pattern_head *head, struct pat_r
  * flag <reuse> is set.
  */
 struct pattern_expr *pattern_new_expr(struct pattern_head *head, struct pat_ref *ref,
-                                      char **err, int *reuse)
+                                      int patflags, char **err, int *reuse)
 {
 	struct pattern_expr *expr;
 	struct pattern_expr_list *list;
@@ -2046,7 +2046,8 @@ struct pattern_expr *pattern_new_expr(struct pattern_head *head, struct pat_ref 
 		list_for_each_entry(expr, &ref->pat, list)
 			if (expr->pat_head->index     == head->index &&
 			    expr->pat_head->parse     == head->parse &&
-			    expr->pat_head->parse_smp == head->parse_smp)
+			    expr->pat_head->parse_smp == head->parse_smp &&
+			    expr->mflags == patflags)
 				break;
 		if (&expr->list == &ref->pat)
 			expr = NULL;
@@ -2066,6 +2067,9 @@ struct pattern_expr *pattern_new_expr(struct pattern_head *head, struct pat_ref 
 
 		/* Initialize this new expr. */
 		pattern_init_expr(expr);
+
+		/* Copy the pattern matching and indexing flags. */
+		expr->mflags = patflags;
 
 		/* This new pattern expression reference one of his heads. */
 		expr->pat_head = head;
@@ -2335,10 +2339,9 @@ int pattern_read_from_file(struct pattern_head *head, unsigned int refflags,
 	 */
 	expr = pattern_lookup_expr(head, ref);
 	if (!expr || (expr->mflags != patflags)) {
-		expr = pattern_new_expr(head, ref, err, &reuse);
+		expr = pattern_new_expr(head, ref, patflags, err, &reuse);
 		if (!expr)
 			return 0;
-		expr->mflags = patflags;
 	}
 
 	/* The returned expression may be not empty, because the function

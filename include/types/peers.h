@@ -92,7 +92,7 @@ struct peers {
 };
 
 
-extern struct peers *peers;
+extern struct peers *cfg_peers;
 
 #endif /* _TYPES_PEERS_H */
 

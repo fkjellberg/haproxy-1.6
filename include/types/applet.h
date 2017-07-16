@@ -116,6 +116,7 @@ struct appctx {
 			struct hlua_socket *socket;
 			struct list wake_on_read;
 			struct list wake_on_write;
+			int die;
 		} hlua;
 		struct {
 			struct hlua hlua;

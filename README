@@ -114,7 +114,11 @@ Your are strongly encouraged to always use an up-to-date version of OpenSSL, as
 found on https://www.openssl.org/ as vulnerabilities are occasionally found and
 you don't want them on your systems. HAProxy is known to build correctly on all
 currently supported branches (0.9.8, 1.0.0, 1.0.1 and 1.0.2 at the time of
-writing). Branch 1.0.2 is recommended for the richest features.
+writing). Branch 1.0.2 is currently recommended for the best combination of
+features and stability. 1.1.0 is known *not* to work and requires too many
+changes, haproxy 1.7 is needed for this. It's worth mentionning that some
+OpenSSL derivatives are also reported to work but may occasionally break.
+Patches to fix them are welcome but please read the CONTRIBUTING file first.
 
 To link OpenSSL statically against haproxy, build OpenSSL with the no-shared
 keyword and install it to a local directory, so your system is not affected :

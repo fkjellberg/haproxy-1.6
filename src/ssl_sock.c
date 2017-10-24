@@ -308,7 +308,7 @@ static int ssl_sock_load_ocsp_response(struct chunk *ocsp_response, struct certi
 	}
 
 	rc = OCSP_single_get0_status(sr, &reason, &revtime, &thisupd, &nextupd);
-	if (rc == V_OCSP_CERTSTATUS_UNKNOWN) {
+	if (rc != V_OCSP_CERTSTATUS_GOOD && rc != V_OCSP_CERTSTATUS_REVOKED) {
 		memprintf(err, "OCSP single response: certificate status is unknown");
 		goto out;
 	}

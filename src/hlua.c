@@ -2362,6 +2362,7 @@ __LJMP static int hlua_socket_settimeout(struct lua_State *L)
 	socket->s->res.rto = tmout;
 	socket->s->res.wto = tmout;
 
+	lua_pushinteger(L, 1);
 	return 1;
 }
 

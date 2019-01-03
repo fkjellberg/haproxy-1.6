@@ -99,7 +99,7 @@ static inline void stream_store_counters(struct stream *s)
 			continue;
 
 		ptr = stktable_data_ptr(s->stkctr[i].table, stkctr_entry(&s->stkctr[i]), STKTABLE_DT_CONN_CUR);
-		if (ptr)
+		if (ptr && stktable_data_cast(ptr, conn_cur) > 0)
 			stktable_data_cast(ptr, conn_cur)--;
 		stkctr_entry(&s->stkctr[i])->ref_cnt--;
 		stksess_kill_if_expired(s->stkctr[i].table, stkctr_entry(&s->stkctr[i]));
@@ -128,7 +128,7 @@ static inline void stream_stop_content_counters(struct stream *s)
 			continue;
 
 		ptr = stktable_data_ptr(s->stkctr[i].table, stkctr_entry(&s->stkctr[i]), STKTABLE_DT_CONN_CUR);
-		if (ptr)
+		if (ptr && stktable_data_cast(ptr, conn_cur) > 0)
 			stktable_data_cast(ptr, conn_cur)--;
 		stkctr_entry(&s->stkctr[i])->ref_cnt--;
 		stksess_kill_if_expired(s->stkctr[i].table, stkctr_entry(&s->stkctr[i]));

@@ -7701,7 +7701,7 @@ int check_config_validity()
 			else if (curproxy->bind_proc & ~target->bind_proc) {
 				Alert("Proxy '%s': stick-table '%s' referenced 'stick-store' rule not present on all processes covered by proxy '%s'.\n",
 				         curproxy->id, target->id, curproxy->id);
-				return 0;
+				cfgerr++;
 			}
 			else {
 				free((void *)mrule->table.name);
@@ -7739,7 +7739,7 @@ int check_config_validity()
 			else if (curproxy->bind_proc & ~target->bind_proc) {
 				Alert("Proxy '%s': stick-table '%s' referenced 'stick-store' rule not present on all processes covered by proxy '%s'.\n",
 				         curproxy->id, target->id, curproxy->id);
-				return 0;
+				cfgerr++;
 			}
 			else {
 				free((void *)mrule->table.name);
@@ -7780,7 +7780,7 @@ int check_config_validity()
 			else if (curproxy->bind_proc & ~target->bind_proc) {
 				Alert("Proxy '%s': stick-table '%s' referenced by the 'track-sc%d' rule not present on all processes covered by proxy '%s'.\n",
 				         curproxy->id, target->id, tcp_trk_idx(trule->action), curproxy->id);
-				return 0;
+				cfgerr++;
 			}
 			else {
 				free(trule->arg.trk_ctr.table.n);
@@ -7824,7 +7824,7 @@ int check_config_validity()
 			else if (curproxy->bind_proc & ~target->bind_proc) {
 				Alert("Proxy '%s': stick-table '%s' referenced by the 'track-sc%d' rule not present on all processes covered by proxy '%s'.\n",
 				         curproxy->id, target->id, tcp_trk_idx(trule->action), curproxy->id);
-				return 0;
+				cfgerr++;
 			}
 			else {
 				free(trule->arg.trk_ctr.table.n);
@@ -7894,7 +7894,7 @@ int check_config_validity()
 			else if (curproxy->bind_proc & ~target->bind_proc) {
 				Alert("Proxy '%s': stick-table '%s' referenced by the 'track-sc%d' rule not present on all processes covered by proxy '%s'.\n",
 				         curproxy->id, target->id, http_req_trk_idx(hrqrule->action), curproxy->id);
-				return 0;
+				cfgerr++;
 			}
 			else {
 				free(hrqrule->arg.trk_ctr.table.n);

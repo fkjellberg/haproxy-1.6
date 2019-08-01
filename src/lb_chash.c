@@ -82,8 +82,13 @@ static inline void chash_queue_dequeue_srv(struct server *s)
 	 * increased the weight beyond the original weight
 	 */
 	if (s->lb_nodes_tot < s->eweight) {
-		struct tree_occ *new_nodes = realloc(s->lb_nodes, s->eweight * sizeof(*new_nodes));
+		struct tree_occ *new_nodes;
 
+		/* First we need to remove all server's entries from its tree
+		 * because the realloc will change all nodes pointers */
+		chash_dequeue_srv(s);
+
+		new_nodes = realloc(s->lb_nodes, s->eweight * sizeof(*new_nodes));
 		if (new_nodes) {
 			unsigned int j;
 

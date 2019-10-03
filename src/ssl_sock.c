@@ -1574,7 +1574,7 @@ static int ssl_sock_add_cert_sni(SSL_CTX *ctx, struct bind_conf *s, char *name, 
 		for (j = 0; j < len && j < trash.size; j++)
 			trash.str[j] = tolower(name[j]);
 		if (j >= trash.size)
-			return order;
+			return -1;
 		trash.str[j] = 0;
 
 		/* Check for duplicates. */
@@ -1590,7 +1590,7 @@ static int ssl_sock_add_cert_sni(SSL_CTX *ctx, struct bind_conf *s, char *name, 
 
 		sc = malloc(sizeof(struct sni_ctx) + len + 1);
 		if (!sc)
-			return order;
+			return -1;
 		memcpy(sc->name.key, trash.str, len + 1);
 		sc->ctx = ctx;
 		sc->order = order++;
@@ -1631,8 +1631,11 @@ static int ssl_sock_load_cert_chain_file(SSL_CTX *ctx, const char *file, struct 
 		goto end;
 
 	if (fcount) {
-		while (fcount--)
+		while (fcount--) {
 			order = ssl_sock_add_cert_sni(ctx, s, sni_filter[fcount], order);
+			if (order < 0)
+				goto end;
+		}
 	}
 	else {
 #ifdef SSL_CTRL_SET_TLSEXT_HOSTNAME
@@ -1644,6 +1647,8 @@ static int ssl_sock_load_cert_chain_file(SSL_CTX *ctx, const char *file, struct 
 					if (ASN1_STRING_to_UTF8((unsigned char **)&str, name->d.dNSName) >= 0) {
 						order = ssl_sock_add_cert_sni(ctx, s, str, order);
 						OPENSSL_free(str);
+						if (order < 0)
+							goto end;
 					}
 				}
 			}
@@ -1657,6 +1662,8 @@ static int ssl_sock_load_cert_chain_file(SSL_CTX *ctx, const char *file, struct 
 			if (ASN1_STRING_to_UTF8((unsigned char **)&str, entry->value) >= 0) {
 				order = ssl_sock_add_cert_sni(ctx, s, str, order);
 				OPENSSL_free(str);
+				if (order < 0)
+					goto end;
 			}
 		}
 	}

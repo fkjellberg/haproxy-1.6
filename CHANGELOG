@@ -1,6 +1,117 @@
 ChangeLog :
 ===========
 
+2019/10/25 : 1.6.15
+    - BUG/MINOR: lua: Fix default value for pattern in Socket.receive
+    - DOC: lua: Fix typos in comments of hlua_socket_receive
+    - BUG/MINOR: lua: Fix return value of Socket.settimeout
+    - BUG/MEDIUM: stream: properly handle client aborts during redispatch
+    - DOC: clarify the scope of ssl_fc_is_resumed
+    - BUG/MINOR: poll: too large size allocation for FD events
+    - CLEANUP: sample: Fix comment encoding of sample.c
+    - CLEANUP: sample: Fix outdated comment about sample casts functions
+    - BUG/MINOR: sample: Fix output type of c_ipv62ip
+    - CLEANUP: Fix typo in ARGT_MSK6 comment
+    - BUG/MEDIUM: standard: Fix memory leak in str2ip2()
+    - DOC: Describe routing impact of using interface keyword on bind lines
+    - BUG/MINOR: config: don't emit a warning when global stats is incompletely configured
+    - BUG/MEDIUM: buffer: Fix the wrapping case in bo_putblk
+    - MINOR/BUILD: fix Lua build on Mac OS X
+    - BUILD/MINOR: fix Lua build on Mac OS X (again)
+    - CLEANUP: ssl: Remove a duplicated #include
+    - BUG/MINOR: force-persist and ignore-persist only apply to backends
+    - BUG/MINOR: lua: return bad error messages
+    - BUG/MEDIUM: tcp-check: single connect rule can't detect DOWN servers
+    - MINOR: log: stop emitting alerts when it's not possible to write on the socket
+    - BUG/MINOR: lua: the function returns anything
+    - BUG/MINOR: lua funtion hlua_socket_settimeout don't check negative values
+    - BUG/MINOR: http: Return an error in proxy mode when url2sa fails
+    - BUILD/BUG: enable -fno-strict-overflow by default
+    - DOC: log: more than 2 log servers are allowed
+    - DOC: don't suggest using http-server-close
+    - BUG/MAJOR: channel: Fix crash when trying to read from a closed socket
+    - BUG/MINOR: config: disable http-reuse on TCP proxies
+    - BUG/MINOR: checks: Fix check->health computation for flapping servers
+    - BUG/MINOR: map: correctly track reference to the last ref_elt being dumped
+    - BUG/MINOR: lua: Socket.send threw runtime error: 'close' needs 1 arguments.
+    - BUG/MINOR: ssl/lua: prevent lua from affecting automatic maxconn computation
+    - BUG/MEDIUM: lua/socket: Length required read doesn't work
+    - MINOR: task/notification: Is notifications registered ?
+    - BUG/MEDIUM: lua/socket: wrong scheduling for sockets
+    - BUG/MAJOR: lua: Dead lock with sockets
+    - BUG/MEDIUM: lua/socket: Notification error
+    - BUG/MEDIUM: lua/socket: Sheduling error on write: may dead-lock
+    - BUG/MEDIUM: lua/socket: Buffer error, may segfault
+    - BUG/MINOR: lua: Segfaults with wrong usage of types.
+    - BUG/MEDIUM: stream-int: don't immediately enable reading when the buffer was reportedly full
+    - BUG/MEDIUM: stats: don't ask for more data as long as we're responding
+    - BUG/MINOR: config: stick-table is not supported in defaults section
+    - BUG/MAJOR: map: fix a segfault when using http-request set-map
+    - BUG/MEDIUM: lua: possible CLOSE-WAIT state with '\n' headers
+    - BUG/MINOR: lua: Bad HTTP client request duration.
+    - BUG/MEDIUM: lua: socket timeouts are not applied
+    - BUG/MEDIUM: queue: prevent a backup server from draining the proxy's connections
+    - BUG/MEDIUM: lua: reset lua transaction between http requests
+    - BUG/MEDIUM: hlua: Make sure we drain the output buffer when done.
+    - BUG/MINOR: tools: fix set_net_port() / set_host_port() on IPv4
+    - BUG/MEDIUM: buffers: Make sure we don't wrap in buffer_insert_line2/replace2.
+    - MINOR: server: Use memcpy() instead of strncpy().
+    - MINOR: cfgparse: Write 130 as 128 as 0x82 and 0x80.
+    - DOC: fix reference to map files in MAINTAINERS
+    - BUG/MINOR: config: Copy default error messages when parsing of a backend starts
+    - BUG/MEDIUM: sample: Don't treat SMP_T_METH as SMP_T_STR.
+    - DOC: Update configuration doc about the maximum number of stick counters.
+    - DOC: restore note about "independant" typo
+    - BUG/MAJOR: stream-int: Update the stream expiration date in stream_int_notify()
+    - BUG/MINOR: backend: don't use url_param_name as a hint for BE_LB_ALGO_PH
+    - BUG/MINOR: backend: balance uri specific options were lost across defaults
+    - BUG/MINOR: backend: BE_LB_LKUP_CHTREE is a value, not a bit
+    - BUG/MINOR: stick_table: Prevent conn_cur from underflowing
+    - BUG/MINOR: server: don't always trust srv_check_health when loading a server state
+    - BUG/MINOR: check: Wake the check task if the check is finished in wake_srv_chk()
+    - BUG/MINOR: deinit: tcp_rep.inspect_rules not deinit, add to deinit
+    - BUG/MINOR: stream: don't close the front connection when facing a backend error
+    - BUG/MEDIUM: stream: Don't forget to free s->unique_id in stream_free().
+    - BUG/MAJOR: config: verify that targets of track-sc and stick rules are present
+    - BUG/MINOR: config: make sure to count the error on incorrect track-sc/stick rules
+    - BUG/MAJOR: stream: avoid double free on unique_id
+    - BUG/MEDIUM: 51d: fix possible segfault on deinit_51degrees()
+    - BUG/MAJOR: stats: Fix how huge POST data are read from the channel
+    - BUG/MINOR: http/counters: fix missing increment of fe->srv_aborts
+    - BUG/MINOR: http: Call stream_inc_be_http_req_ctr() only one time per request
+    - BUG/MINOR: http-rules: mention "deny_status" for "deny" in the error message
+    - BUG/MEDIUM: proto-http: Always start the parsing if there is no outgoing data
+    - BUG/MEDIUM: http: also reject messages where "chunked" is missing from transfer-enoding
+    - BUG/MAJOR: checks: segfault during tcpcheck_main
+    - BUG/MEDIUM: tcp-check: unbreak multiple connect rules again
+    - BUILD: makefile: work around an old bug in GNU make-3.80
+    - BUILD: makefile: use :space: instead of digits to count commits
+    - BUILD: makefile: do not rely on shell substitutions to determine git version
+    - BUG/MEDIUM: pattern: assign pattern IDs after checking the config validity
+    - BUG/MEDIUM: maps: only try to parse the default value when it's present
+    - BUG/MINOR: acl: properly detect pattern type SMP_T_ADDR
+    - BUG/MAJOR: map/acl: real fix segfault during show map/acl on CLI
+    - BUG/MINOR: acl: Fix memory leaks when an ACL expression is parsed
+    - MINOR: config: Test validity of tune.maxaccept during the config parsing
+    - CLEANUP: config: Don't alter listener->maxaccept when nbproc is set to 1
+    - BUG/MEDIUM: compression: Set Vary: Accept-Encoding for compressed responses
+    - DOC: improve the wording in CONTRIBUTING about how to document a bug fix
+    - BUG/MEDIUM: hlua: Check the calling direction in lua functions of the HTTP class
+    - MINOR: hlua: Don't set request analyzers on response channel for lua actions
+    - MINOR: hlua: Add a flag on the lua txn to know in which context it can be used
+    - BUG/MINOR: hlua: Only execute functions of HTTP class if the txn is HTTP ready
+    - BUG/MINOR: lua: Set right direction and flags on new HTTP objects
+    - BUG/MINOR: lua: Properly initialize the buffer's fields for string samples in hlua_lua2(smp|arg)
+    - BUG/MEDIUM: lb-chash: Fix the realloc() when the number of nodes is increased
+    - BUG/MEDIUM: lb-chash: Ensure the tree integrity when server weight is increased
+    - BUG/MEDIUM: namespace: close open namespaces during soft shutdown
+    - BUG/MINOR: ssl: abort on sni allocation failure
+    - BUG/MINOR: sample: Make the `field` converter compatible with `-m found`
+    - BUILD/MINOR: ssl: silence a build warning about const and 'cipher'
+    - BUG/MEDIUM: da: cast the chunk to string.
+    - BUG/MEDIUM: vars: make sure the scope is always valid when accessing vars
+    - BUG/MINOR: stick-table: fix an incorrect 32 to 64 bit key conversion
+
 2018/01/02 : 1.6.14
     - BUG/MINOR: Wrong peer task expiration handling during synchronization processing.
     - BUG/MEDIUM: http: Drop the connection establishment when a redirect is performed

@@ -137,17 +137,23 @@ void dns_resolve_recv(struct dgram_conn *dgram)
 		return;
 
 	/* no need to go further if we can't retrieve the nameserver */
-	if ((nameserver = (struct dns_nameserver *)dgram->owner) == NULL)
+	if ((nameserver = (struct dns_nameserver *)dgram->owner) == NULL) {
+		fdtab[fd].ev &= ~(FD_POLL_HUP|FD_POLL_ERR);
 		return;
+	}
 
 	resolvers = nameserver->resolvers;
 
 	/* process all pending input messages */
-	while (1) {
+	while (fd_recv_ready(fd)) {
 		/* read message received */
 		memset(buf, '\0', DNS_MAX_UDP_MESSAGE + 1);
 		if ((buflen = recv(fd, (char*)buf , DNS_MAX_UDP_MESSAGE, 0)) < 0) {
-			/* FIXME : for now we consider EAGAIN only */
+			/* FIXME : for now we consider EAGAIN only, but at
+			 * least we purge sticky errors that would cause us to
+			 * be called in loops.
+			 */
+			fdtab[fd].ev &= ~(FD_POLL_HUP|FD_POLL_ERR);
 			fd_cant_recv(fd);
 			break;
 		}

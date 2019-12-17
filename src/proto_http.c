@@ -9118,31 +9118,6 @@ void http_reset_txn(struct stream *s)
 	s->si[1].hcto = TICK_ETERNITY;
 }
 
-void free_http_res_rules(struct list *r)
-{
-	struct act_rule *tr, *pr;
-
-	list_for_each_entry_safe(pr, tr, r, list) {
-		LIST_DEL(&pr->list);
-		regex_free(&pr->arg.hdr_add.re);
-		free(pr);
-	}
-}
-
-void free_http_req_rules(struct list *r)
-{
-	struct act_rule *tr, *pr;
-
-	list_for_each_entry_safe(pr, tr, r, list) {
-		LIST_DEL(&pr->list);
-		if (pr->action == ACT_HTTP_REQ_AUTH)
-			free(pr->arg.auth.realm);
-
-		regex_free(&pr->arg.hdr_add.re);
-		free(pr);
-	}
-}
-
 /* parse an "http-request" rule */
 struct act_rule *parse_http_req_cond(const char **args, const char *file, int linenum, struct proxy *proxy)
 {

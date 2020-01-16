@@ -7874,7 +7874,7 @@ int check_config_validity()
 			    hrqrule->action_ptr != http_action_req_capture_by_id)
 				continue;
 
-			if (hrqrule->arg.capid.idx >= curproxy->nb_req_cap) {
+			if (curproxy->cap & PR_CAP_FE && hrqrule->arg.capid.idx >= curproxy->nb_req_cap) {
 				Alert("Proxy '%s': unable to find capture id '%d' referenced by http-request capture rule.\n",
 				      curproxy->id, hrqrule->arg.capid.idx);
 				cfgerr++;

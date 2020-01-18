@@ -37,7 +37,7 @@
 struct list dns_resolvers = LIST_HEAD_INIT(dns_resolvers);
 struct dns_resolution *resolution = NULL;
 
-static int64_t dns_query_id_seed;	/* random seed */
+static uint64_t dns_query_id_seed;	/* random seed */
 
 /* proto_udp callback functions for a DNS resolution */
 struct dgram_data_cb resolve_dgram_cb = {

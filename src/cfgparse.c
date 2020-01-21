@@ -3367,8 +3367,33 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int kwm)
 				curproxy->cookie_maxlife = maxlife;
 				cur_arg++;
 			}
+			else if (!strcmp(args[cur_arg], "attr")) {
+				char *val;
+				if (!*args[cur_arg + 1]) {
+					Alert("parsing [%s:%d]: '%s' expects <value> as argument.\n",
+						 file, linenum, args[cur_arg]);
+					err_code |= ERR_ALERT | ERR_FATAL;
+					goto out;
+				}
+				val = args[cur_arg + 1];
+				while (*val) {
+					if (iscntrl(*val) || *val == ';') {
+						Alert("parsing [%s:%d]: character '%%x%02X' is not permitted in attribute value.\n",
+							 file, linenum, *val);
+						err_code |= ERR_ALERT | ERR_FATAL;
+						goto out;
+					}
+					val++;
+				}
+				/* don't add ';' for the first attribute */
+				if (!curproxy->cookie_attrs)
+					curproxy->cookie_attrs = strdup(args[cur_arg + 1]);
+				else
+					memprintf(&curproxy->cookie_attrs, "%s; %s", curproxy->cookie_attrs, args[cur_arg + 1]);
+				cur_arg++;
+			}
 			else {
-				Alert("parsing [%s:%d] : '%s' supports 'rewrite', 'insert', 'prefix', 'indirect', 'nocache', 'postonly', 'domain', 'maxidle, and 'maxlife' options.\n",
+				Alert("parsing [%s:%d] : '%s' supports 'rewrite', 'insert', 'prefix', 'indirect', 'nocache', 'postonly', 'domain', 'maxidle, 'attr' and 'maxlife' options.\n",
 				      file, linenum, args[0]);
 				err_code |= ERR_ALERT | ERR_FATAL;
 				goto out;

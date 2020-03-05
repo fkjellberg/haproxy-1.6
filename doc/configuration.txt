@@ -7155,7 +7155,7 @@ server-state-file-name [<file>]
     global
       server-state-file-base /etc/haproxy/states
 
-   backend bk
+    backend bk
       load-server-state-from-file
 
   See also: "server-state-file-base", "load-server-state-from-file", and

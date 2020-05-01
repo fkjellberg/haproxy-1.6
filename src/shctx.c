@@ -127,7 +127,7 @@ static inline void _shared_context_wait4lock(unsigned int *count, unsigned int *
 		if (*uaddr != value)
 			return;
         }
-        *count = *count << 1;
+	*count = (unsigned char)((*count << 1) + 1);
 }
 
 #define _shared_context_awakelocker(a)
@@ -187,7 +187,7 @@ static inline unsigned char atomic_dec(unsigned int *ptr)
 static inline void _shared_context_lock(void)
 {
 	unsigned int x;
-	unsigned int count = 4;
+	unsigned int count = 3;
 
 	x = cmpxchg(&shctx->waiters, 0, 1);
 	if (x) {

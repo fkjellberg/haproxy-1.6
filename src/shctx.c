@@ -124,6 +124,8 @@ static inline void _shared_context_wait4lock(unsigned int *count, unsigned int *
         for (i = 0; i < *count; i++) {
                 relax();
                 relax();
+		if (*uaddr != value)
+			return;
         }
         *count = *count << 1;
 }

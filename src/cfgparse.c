@@ -7887,7 +7887,10 @@ int check_config_validity()
 			    hrqrule->action_ptr != http_action_res_capture_by_id)
 				continue;
 
-			if (hrqrule->arg.capid.idx >= curproxy->nb_rsp_cap) {
+			/* capture slots can only be declared in frontends, so we can't check their
+			 * existence in backends at configuration parsing step
+			 */
+			if (curproxy->cap & PR_CAP_FE && hrqrule->arg.capid.idx >= curproxy->nb_rsp_cap) {
 				Alert("Proxy '%s': unable to find capture id '%d' referenced by http-response capture rule.\n",
 				      curproxy->id, hrqrule->arg.capid.idx);
 				cfgerr++;

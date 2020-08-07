@@ -794,10 +794,16 @@ __LJMP int hlua_lua2arg_check(lua_State *L, int first, struct arg *argp,
 			break;
 
 		case ARGT_MSK4:
-			memcpy(trash.str, argp[idx].data.str.str, argp[idx].data.str.len);
-			trash.str[argp[idx].data.str.len] = 0;
-			if (!str2mask(trash.str, &argp[idx].data.ipv4))
-				WILL_LJMP(luaL_argerror(L, first + idx, "invalid IPv4 mask"));
+			if (argp[idx].type == ARGT_SINT)
+				len2mask4(argp[idx].data.sint, &argp[idx].data.ipv4);
+			else if (argp[idx].type == ARGT_STR) {
+				memcpy(trash.str, argp[idx].data.str.str, argp[idx].data.str.len);
+				trash.str[argp[idx].data.str.len] = 0;
+				if (!str2mask(trash.str, &argp[idx].data.ipv4))
+					WILL_LJMP(luaL_argerror(L, first + idx, "invalid IPv4 mask"));
+			}
+			else
+				WILL_LJMP(luaL_argerror(L, first + idx, "integer or string expected"));
 			argp[idx].type = ARGT_MSK4;
 			break;
 

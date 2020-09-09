@@ -1050,6 +1050,7 @@ void pat_prune_val(struct pattern_expr *expr)
 	struct pattern_list *pat, *tmp;
 
 	list_for_each_entry_safe(pat, tmp, &expr->patterns, list) {
+		LIST_DEL(&pat->list);
 		free(pat->pat.data);
 		free(pat);
 	}
@@ -1057,6 +1058,7 @@ void pat_prune_val(struct pattern_expr *expr)
 	free_pattern_tree(&expr->pattern_tree);
 	free_pattern_tree(&expr->pattern_tree_2);
 	LIST_INIT(&expr->patterns);
+	expr->revision = rdtsc();
 }
 
 void pat_prune_ptr(struct pattern_expr *expr)
@@ -1064,6 +1066,7 @@ void pat_prune_ptr(struct pattern_expr *expr)
 	struct pattern_list *pat, *tmp;
 
 	list_for_each_entry_safe(pat, tmp, &expr->patterns, list) {
+		LIST_DEL(&pat->list);
 		free(pat->pat.ptr.ptr);
 		free(pat->pat.data);
 		free(pat);
@@ -1072,6 +1075,7 @@ void pat_prune_ptr(struct pattern_expr *expr)
 	free_pattern_tree(&expr->pattern_tree);
 	free_pattern_tree(&expr->pattern_tree_2);
 	LIST_INIT(&expr->patterns);
+	expr->revision = rdtsc();
 }
 
 void pat_prune_reg(struct pattern_expr *expr)
@@ -1079,6 +1083,7 @@ void pat_prune_reg(struct pattern_expr *expr)
 	struct pattern_list *pat, *tmp;
 
 	list_for_each_entry_safe(pat, tmp, &expr->patterns, list) {
+		LIST_DEL(&pat->list);
 		regex_free(pat->pat.ptr.ptr);
 		free(pat->pat.data);
 		free(pat);
@@ -1087,6 +1092,7 @@ void pat_prune_reg(struct pattern_expr *expr)
 	free_pattern_tree(&expr->pattern_tree);
 	free_pattern_tree(&expr->pattern_tree_2);
 	LIST_INIT(&expr->patterns);
+	expr->revision = rdtsc();
 }
 
 /*

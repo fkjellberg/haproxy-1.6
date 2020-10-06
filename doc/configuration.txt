@@ -9723,8 +9723,11 @@ crt-list <file>
 
         <crtfile> [[!]<snifilter> ...]
 
-  Wildcards are supported in the SNI filter. Negative filter are also supported,
-  only useful in combination with a wildcard filter to exclude a particular SNI.
+  Wildcards are supported in the SNI filter. Negative filters can be specified
+  in the configuration, but they are only used as a hint, they don't do
+  anything.  (this changes in newer haproxy versions) If you want to exclude a
+  SNI from a wildcard, use this positive SNI on another line. (like in the
+  example).
   The certificates will be presented to clients who provide a valid TLS Server
   Name Indication field matching one of the SNI filters. If no SNI filter is
   specified, the CN and alt subjects are used. This directive may be specified

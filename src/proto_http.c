@@ -11088,6 +11088,7 @@ smp_fetch_http_auth_grp(const struct arg *args, struct sample *smp, const char *
 }
 
 /* Try to find the next occurrence of a cookie name in a cookie header value.
+ * To match on any cookie name, <cookie_name_l> must be set to 0.
  * The lookup begins at <hdr>. The pointer and size of the next occurrence of
  * the cookie value is returned into *value and *value_l, and the function
  * returns a pointer to the next pointer to search from if the value was found.
@@ -11166,8 +11167,8 @@ extract_cookie_value(char *hdr, const char *hdr_end,
 		 * its value between val_beg and val_end.
 		 */
 
-		if (att_end - att_beg == cookie_name_l &&
-		    memcmp(att_beg, cookie_name, cookie_name_l) == 0) {
+		if (cookie_name_l == 0 || (att_end - att_beg == cookie_name_l &&
+		    memcmp(att_beg, cookie_name, cookie_name_l) == 0)) {
 			/* let's return this value and indicate where to go on from */
 			*value = val_beg;
 			*value_l = val_end - val_beg;
@@ -11370,11 +11371,11 @@ smp_fetch_capture_res_ver(const struct arg *args, struct sample *smp, const char
  * smp->ctx.a[0] for the in-header position, smp->ctx.a[1] for the
  * end-of-header-value, and smp->ctx.a[2] for the hdr_ctx. Depending on
  * the direction, multiple cookies may be parsed on the same line or not.
- * The cookie name is in args and the name length in args->data.str.len.
- * Accepts exactly 1 argument of type string. If the input options indicate
- * that no iterating is desired, then only last value is fetched if any.
- * The returned sample is of type CSTR. Can be used to parse cookies in other
- * files.
+ * If provided, the searched cookie name is in args, in args->data.str. If
+ * the input options indicate that no iterating is desired, then only last
+ * value is fetched if any. If no cookie name is provided, the first cookie
+ * value found is fetched. The returned sample is of type CSTR.  Can be used
+ * to parse cookies in other files.
  */
 int smp_fetch_cookie(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
@@ -11385,7 +11386,6 @@ int smp_fetch_cookie(const struct arg *args, struct sample *smp, const char *kw,
 	const char *hdr_name;
 	int hdr_name_len;
 	char *sol;
-	int occ = 0;
 	int found = 0;
 
 	if (!args || args->type != ARGT_STR)
@@ -11413,13 +11413,9 @@ int smp_fetch_cookie(const struct arg *args, struct sample *smp, const char *kw,
 		hdr_name_len = 10;
 	}
 
-	if (!occ && !(smp->opt & SMP_OPT_ITERATE))
-		/* no explicit occurrence and single fetch => last cookie by default */
-		occ = -1;
-
-	/* OK so basically here, either we want only one value and it's the
-	 * last one, or we want to iterate over all of them and we fetch the
-	 * next one.
+	/* OK so basically here, either we want only one value or we want to
+	 * iterate over all of them and we fetch the next one. In this last case
+	 * SMP_OPT_ITERATE option is set.
 	 */
 
 	sol = msg->chn->buf->p;
@@ -11455,10 +11451,14 @@ int smp_fetch_cookie(const struct arg *args, struct sample *smp, const char *kw,
 						 &smp->data.u.str.len);
 		if (smp->ctx.a[0]) {
 			found = 1;
-			if (occ >= 0) {
-				/* one value was returned into smp->data.u.str.{str,len} */
+			if (smp->opt & SMP_OPT_ITERATE) {
+				/* iterate on cookie value */
 				smp->flags |= SMP_F_NOT_LAST;
 				return 1;
+			}
+			if (args->data.str.len == 0) {
+				/* No cookie name, first occurrence returned */
+				break;
 			}
 		}
 		/* if we're looking for last occurrence, let's loop */

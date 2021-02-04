@@ -39,8 +39,14 @@ You can contact the author at :
 // For others CPU, the compiler will be more cautious, and insert extra code to ensure aligned access is respected.
 // If you know your target CPU supports unaligned memory access, you want to force this option manually to improve performance.
 // You can also enable this parameter if you know your input data will always be aligned (boundaries of 4, for U32).
+// 32-bit ARM is more annoying, modern cores do support unaligned accesses, but
+// not on 64-bit data (the ldrd instructions causes an alignment exception).
+// Because of this we need to split the condition for 32 and 64 bit.
 #if defined(__ARM_FEATURE_UNALIGNED) || defined(__i386) || defined(_M_IX86) || defined(__x86_64__) || defined(_M_X64)
 #  define XXH_USE_UNALIGNED_ACCESS 1
+#  if !defined(__arm__)
+#    define XXH_USE_UNALIGNED_ACCESS64 1
+#  endif
 #endif
 
 // XXH_ACCEPT_NULL_INPUT_POINTER :
@@ -118,6 +124,12 @@ typedef unsigned long long U64;
 #  define _PACKED
 #endif
 
+#if defined(__GNUC__)  && !defined(XXH_USE_UNALIGNED_ACCESS64)
+#  define _PACKED64 __attribute__ ((packed))
+#else
+#  define _PACKED64
+#endif
+
 #if !defined(XXH_USE_UNALIGNED_ACCESS) && !defined(__GNUC__)
 #  ifdef __IBMC__
 #    pragma pack(1)
@@ -133,7 +145,7 @@ typedef struct _U32_S
 typedef struct _U64_S
 {
     U64 v;
-} _PACKED U64_S;
+} _PACKED64 U64_S;
 
 #if !defined(XXH_USE_UNALIGNED_ACCESS) && !defined(__GNUC__)
 #  pragma pack(pop)
@@ -479,7 +491,7 @@ unsigned long long XXH64 (const void* input, size_t len, unsigned long long seed
 #else
     XXH_endianess endian_detected = (XXH_endianess)XXH_CPU_LITTLE_ENDIAN;
 
-#  if !defined(XXH_USE_UNALIGNED_ACCESS)
+#  if !defined(XXH_USE_UNALIGNED_ACCESS64)
     if ((((size_t)input) & 7)==0)   // Input is aligned, let's leverage the speed advantage
     {
         if ((endian_detected==XXH_littleEndian) || XXH_FORCE_NATIVE_FORMAT)

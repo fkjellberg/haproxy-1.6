@@ -1278,6 +1278,7 @@ void deinit(void)
 		free(p->cookie_domain);
 		free(p->cookie_attrs);
 		free(p->url_param_name);
+		free(p->server_state_file_name);
 		free(p->capture_name);
 		free(p->monitor_uri);
 		free(p->rdp_cookie_name);
@@ -1554,6 +1555,8 @@ void deinit(void)
 	free(get_http_auth_buff); get_http_auth_buff = NULL;
 	free(swap_buffer);    swap_buffer = NULL;
 	task_free(global_listener_queue_task); global_listener_queue_task = NULL;
+	free(global.server_state_base); global.server_state_base = NULL;
+	free(global.server_state_file); global.server_state_file = NULL;
 
 	list_for_each_entry_safe(log, logb, &global.logsrvs, list) {
 			LIST_DEL(&log->list);

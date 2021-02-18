@@ -87,13 +87,13 @@ int smp_is_safe(struct sample *smp)
 	switch (smp->data.type) {
 	case SMP_T_STR:
 		if ((smp->data.u.str.len < 0) ||
-		    (smp->data.u.str.size && smp->data.u.str.len >= smp->data.u.str.size))
+		    (!smp->data.u.str.size || smp->data.u.str.len >= smp->data.u.str.size))
 			return 0;
 
 		if (smp->data.u.str.str[smp->data.u.str.len] == 0)
 			return 1;
 
-		if (!smp->data.u.str.size || (smp->flags & SMP_F_CONST))
+		if (smp->flags & SMP_F_CONST)
 			return 0;
 
 		smp->data.u.str.str[smp->data.u.str.len] = 0;

@@ -778,8 +778,10 @@ int assign_server_address(struct stream *s)
 			conn_get_to_addr(cli_conn);
 
 			if (cli_conn->addr.to.ss_family == AF_INET) {
+				((struct sockaddr_in *)&srv_conn->addr.to)->sin_family = AF_INET;
 				((struct sockaddr_in *)&srv_conn->addr.to)->sin_addr = ((struct sockaddr_in *)&cli_conn->addr.to)->sin_addr;
 			} else if (cli_conn->addr.to.ss_family == AF_INET6) {
+				((struct sockaddr_in6 *)&srv_conn->addr.to)->sin6_family = AF_INET6;
 				((struct sockaddr_in6 *)&srv_conn->addr.to)->sin6_addr = ((struct sockaddr_in6 *)&cli_conn->addr.to)->sin6_addr;
 			}
 		}

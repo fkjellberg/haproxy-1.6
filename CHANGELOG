@@ -1,6 +1,79 @@
 ChangeLog :
 ===========
 
+2021/03/19 : 1.6.16
+    - BUG/MINOR: config: Update cookie domain warn to RFC6265
+    - BUG/MEDIUM: stream: Be sure to release allocated captures for TCP streams
+    - BUG/MINOR: ssl: fix crt-list neg filter for openssl < 1.1.1
+    - DOC: clarify matching strings on binary fetches
+    - BUG/MINOR: listener: also clear the error flag on a paused listener
+    - BUG/MAJOR: dns: add minimalist error processing on the Rx path
+    - BUG/MEDIUM: proto_udp/threads: recv() and send() must not be exclusive.
+    - BUILD/MINOR: tools: shut up the format truncation warning in get_gmt_offset()
+    - DOC: remove references to the outdated architecture.txt
+    - BUG/MINOR: sample: fix the closing bracket and LF in the debug converter
+    - BUG/MAJOR: hashes: fix the signedness of the hash inputs
+    - BUG/MINOR: stream: don't mistake match rules for store-request rules
+    - BUG/MINOR: pattern: handle errors from fgets when trying to load patterns
+    - BUG/MINOR: dns: Make dns_query_id_seed unsigned
+    - BUG/MINOR: http-rules: Remove buggy deinit functions for HTTP rules
+    - BUG/MINOR: stick-table: Use MAX_SESS_STKCTR as the max track ID during parsing
+    - MINOR: proxy/http-ana: Add support of extra attributes for the cookie directive
+    - BUG/MINOR: http_act: don't check capture id in backend
+    - BUG/MINOR: unix: better catch situations where the unix socket path length is close to the limit
+    - BUG/MINOR: dns: allow 63 char in hostname
+    - BUG/MINOR: namespace: avoid closing fd when socket failed in my_socketat
+    - MINOR: compiler: move CPU capabilities definition from config.h and complete them
+    - BUG/MEDIUM: ebtree: don't set attribute packed without unaligned access support
+    - BUILD: fix recent build failure on unaligned archs
+    - MINOR: compiler: add new alignment macros
+    - BUILD: ebtree: improve architecture-specific alignment
+    - BUG/MINOR: sample: fix the json converter's endian-sensitivity
+    - BUG/MAJOR: list: fix invalid element address calculation
+    - DOC: fix incorrect indentation of http_auth_*
+    - BUG/MAJOR: proxy_protocol: Properly validate TLV lengths
+    - BUG/MINOR: rules: Increment be_counters if backend is assigned for a silent-drop
+    - BUG/MEDIUM: capture: capture-req/capture-res converters crash without a stream
+    - BUG/MEDIUM: capture: capture.{req,res}.* crash without a stream
+    - BUG/MEDIUM: http: the "http_first_req" sample fetch could crash without a steeam
+    - BUG/MEDIUM: shctx: really check the lock's value while waiting
+    - BUG/MEDIUM: shctx: bound the number of loops that can happen around the lock
+    - BUG/MEDIUM: lua: Reset analyse expiration timeout before executing a lua action
+    - BUG/MEDIUM: ebtree: use a byte-per-byte memcmp() to compare memory blocks
+    - BUG/MEDIUM: fetch: Fix hdr_ip misparsing IPv4 addresses due to missing NUL
+    - BUG/MEDIUM: pattern: Add a trailing \0 to match strings only if possible
+    - BUG/MINOR: http_act: don't check capture id in backend (2)
+    - BUG/MEDIUM: channel: Be aware of SHUTW_NOW flag when output data are peeked
+    - BUG/MINOR: tcp-rules: Set the inspect-delay when a tcp-response action yields
+    - BUG/MEDIUM: map/lua: Return an error if a map is loaded during runtime
+    - BUG/MINOR: lua: Check argument type to convert it to IPv4/IPv6 arg validation
+    - MINOR: common: mask conversion
+    - BUG/MINOR: lua: Check argument type to convert it to IP mask in arg validation
+    - BUG/MEDIUM: pattern: Renew the pattern expression revision when it is pruned
+    - BUG/MEDIUM: pattern: fix memory leak in regex pattern functions
+    - BUG/MINOR: ssl: verifyhost is case sensitive
+    - BUG/MINOR: config: Fix memory leak on config parse listen
+    - DOC: agent-check: fix typo in "fail" word expected reply
+    - DOC: ssl: crt-list negative filters are only a hint
+    - MINOR: hlua: Display debug messages on stderr only in debug mode
+    - BUG/MINOR: http-fetch: Extract cookie value even when no cookie name
+    - BUG/MINOR: http-fetch: Fix calls w/o parentheses of the cookie sample fetches
+    - DOC: email change of the DeviceAtlas maintainer
+    - BUG/MINOR: tools: make parse_time_err() more strict on the timer validity
+    - BUG/MINOR: tools: Reject size format not starting by a digit
+    - BUG/MINOR: xxhash: make sure armv6 uses memcpy()
+    - BUG/MINOR: server: Fix server-state-file-name directive
+    - CLEANUP: deinit: release global and per-proxy server-state variables on deinit
+    - BUG/MEDIUM: config: don't pick unset values from last defaults section
+    - BUG/MINOR: server: Don't call fopen() with server-state filepath set to NULL
+    - CLEANUP: channel: fix comment in ci_putblk.
+    - BUG/MINOR: checks: properly handle wrapping time in __health_adjust()
+    - BUG/MINOR: sample: Always consider zero size string samples as unsafe
+    - BUG/MINOR: server: Init params before parsing a new server-state line
+    - BUG/MINOR: http-ana: Only consider dst address to process originalto option
+    - BUG/MINOR: connection: Use the client's dst family for adressless servers
+    - BUILD: chunk: properly declare pool_head_trash as extern
+
 2019/10/25 : 1.6.15
     - BUG/MINOR: lua: Fix default value for pattern in Socket.receive
     - DOC: lua: Fix typos in comments of hlua_socket_receive
